@@ -1,33 +1,20 @@
 package main
 
 import (
-	"bufio"
-	"log"
-	"os"
-	"strconv"
-	"strings"
+	"fmt"
+
+	"github.com/anon1689501/AOC2019/lib"
 )
 
 func Day5() {
-	inputText, err := os.Open("input/day5.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+	inputNumbers := lib.ReadInstructions("day5")
+	inputNumbersBackup := make([]int, len(inputNumbers))
+	copy(inputNumbersBackup, inputNumbers)
 
-	defer inputText.Close()
+	day5Part1Solution, _ := Intcode(inputNumbers, 1)
+	fmt.Println(day5Part1Solution)
 
-	scanner := bufio.NewScanner(inputText)
-
-	inputNumbers := make([]int, 0)
-
-	for scanner.Scan() {
-		stringSlice := strings.Split(scanner.Text(), ",")
-		for _, v := range stringSlice {
-			number, _ := strconv.Atoi(v)
-			inputNumbers = append(inputNumbers, number)
-		}
-	}
-
-	Intcode(inputNumbers)
+	day5Part2Solution, _ := Intcode(inputNumbersBackup, 5)
+	fmt.Println(day5Part2Solution)
 
 }

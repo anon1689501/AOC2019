@@ -31,30 +31,42 @@ func Day7() {
 
 	inputNumbersBackup := make([]int, len(inputNumbers))
 	copy(inputNumbersBackup, inputNumbers)
-	phase := []int{0, 1, 2, 3, 4}
+	phase := []int{5, 6, 7, 8, 9}
 	ampOutput := 0
 	maxOutput := 0
-	//maxPhase := make([]int, 5)
+	maxPhase := make([]int, 5)
 
-	for a := range phase {
-		for b := range phase {
-			for c := range phase {
-				for d := range phase {
-					for e := range phase {
+	for _, a := range phase {
+		for _, b := range phase {
+			for _, c := range phase {
+				for _, d := range phase {
+					for _, e := range phase {
 						if a == b || a == c || a == d || a == e || b == c || b == d || b == e || c == d || c == e || d == e {
 							continue
 						} else {
 							ampOutput = 0
+							complete := false
 							localPhase := []int{a, b, c, d, e}
 							index := 0
+							phaseInput := 0
+							//fmt.Println(localPhase)
 							for { //_, v := range localPhase {
 								copy(inputNumbers, inputNumbersBackup)
-								ampOutput = Intcode(inputNumbers, localPhase[index%5], ampOutput)
+								if index < 5 {
+									phaseInput = localPhase[index]
+								} else {
+									phaseInput = ampOutput
+								}
+								ampOutput, complete = Intcode(inputNumbers, phaseInput, ampOutput)
 								index++
+								if complete {
+									break
+								}
 							}
 							if ampOutput > maxOutput {
+								fmt.Println(index)
 								maxOutput = ampOutput
-								//copy(maxPhase, localPhase)
+								copy(maxPhase, localPhase)
 
 							}
 						}
@@ -64,7 +76,7 @@ func Day7() {
 			}
 		}
 	}
-	//fmt.Println(maxPhase)
+	fmt.Println(maxPhase)
 	fmt.Println(maxOutput)
 
 }
